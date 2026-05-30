@@ -80,18 +80,23 @@ export default function ContactForm({
     setIsSubmitting(true);
     setSubmitError(null);
 
+    const newInquiry = {
+      id: 'iq_' + Date.now().toString(),
+      name,
+      email,
+      phone,
+      service,
+      projectType,
+      message,
+      status: 'Unread',
+      createdAt: new Date().toISOString()
+    };
+
     try {
       const response = await fetch('/api/inquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          service,
-          projectType,
-          message
-        })
+        body: JSON.stringify(newInquiry)
       });
 
       if (!response.ok) {
@@ -108,10 +113,25 @@ export default function ContactForm({
       setProjectType('');
       setMessage('');
     } catch (err: any) {
-      console.error('Submission error:', err);
-      // Fallback fallback local submission representation
+      console.error('Submission error, carrying out LocalStorage fallback persistence:', err);
+      try {
+        const stored = localStorage.getItem('asif_creative_inquiries');
+        const currentList = stored ? JSON.parse(stored) : [];
+        currentList.unshift(newInquiry);
+        localStorage.setItem('asif_creative_inquiries', JSON.stringify(currentList));
+      } catch (innerErr) {
+        console.error('Failed storing inquiry locally:', innerErr);
+      }
+
       setSubmitSuccess(true);
       onInquirySubmitted();
+      
+      // Clear Form  state
+      setName('');
+      setEmail('');
+      setPhone('');
+      setProjectType('');
+      setMessage('');
     } finally {
       setIsSubmitting(false);
     }

@@ -6,6 +6,9 @@
 import { Play, Sparkles, Film, ArrowRight, Instagram, Video, Camera } from 'lucide-react';
 import { motion } from 'motion/react';
 
+// Import image for proper Vite asset bundling
+import pakistaniStreetsPortrait from '../assets/images/pakistani_streets_portrait_1780142028744.png';
+
 interface HeroProps {
   onPlanClick: () => void;
   onBookClick: () => void;
@@ -137,7 +140,7 @@ export default function Hero({ onPlanClick, onBookClick }: HeroProps) {
               {/* Main Workspace Frame */}
               <div className="aspect-[4/3] rounded-lg bg-zinc-950 overflow-hidden relative border border-zinc-900 group">
                 <img
-                  src="/src/assets/images/pakistani_streets_portrait_1780142028744.png"
+                  src={pakistaniStreetsPortrait}
                   alt="Asif Creative Workstation"
                   className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
                   referrerPolicy="no-referrer"

@@ -27,7 +27,7 @@ export default function App() {
   const [inquiriesChangeCount, setInquiriesChangeCount] = useState<number>(0);
   const [unreadCount, setUnreadCount] = useState<number>(0);
 
-  // Sync unread numbers from database server
+  // Sync unread numbers from database server or local storage fallback
   const fetchUnreadCount = async () => {
     try {
       const response = await fetch('/api/inquiries');
@@ -35,9 +35,21 @@ export default function App() {
         const data = await response.json();
         const unreads = (data.inquiries || []).filter((i: any) => i.status === 'Unread').length;
         setUnreadCount(unreads);
+      } else {
+        throw new Error('Not OK response');
       }
     } catch (err) {
-      console.error('Quietly unable to fetch unreads:', err);
+      console.error('Quietly unable to fetch unreads from server, loading from localStorage fallback:', err);
+      try {
+        const localData = localStorage.getItem('asif_creative_inquiries');
+        if (localData) {
+          const parsed = JSON.parse(localData);
+          const unreads = parsed.filter((i: any) => i.status === 'Unread').length;
+          setUnreadCount(unreads);
+        }
+      } catch (innerErr) {
+        console.error('Failed to parse local inquiries:', innerErr);
+      }
     }
   };
 

@@ -8,6 +8,11 @@ import { Film, Image, Play, ZoomIn, Sliders, CheckCircle, ExternalLink, Sparkles
 import BeforeAfterSlider from './BeforeAfterSlider';
 import { motion, AnimatePresence } from 'motion/react';
 
+// Import images for proper Vite asset bundling
+import pakistaniTravelerVlog from '../assets/images/pakistani_traveler_vlog_1780142006887.png';
+import pakistaniGroomWedding from '../assets/images/pakistani_groom_wedding_1780141983288.png';
+import pakistaniStreetsPortrait from '../assets/images/pakistani_streets_portrait_1780142028744.png';
+
 export default function Portfolio() {
   const [activeCategory, setActiveCategory] = useState<'all' | 'video' | 'photo'>('all');
   const [selectedProject, setSelectedProject] = useState<any | null>(null);
@@ -23,7 +28,7 @@ export default function Portfolio() {
       duration: '3m 15s',
       software: 'Adobe Premiere & DaVinci Resolve',
       description: 'A high-octane travel vlog featuring custom sound design (mountain winds, rushing turquoise water, epic cinematic swooshes), micro speed-ramps, and spectacular grading of the Karakoram range.',
-      image: '/src/assets/images/pakistani_traveler_vlog_1780142006887.png',
+      image: pakistaniTravelerVlog,
       tags: ['Travel', 'Speed Ramp', 'DaVinci Resolve', 'Sound Design']
     },
     {
@@ -36,7 +41,7 @@ export default function Portfolio() {
       duration: '4m 45s',
       software: 'DaVinci Resolve Studio',
       description: 'Emotionally-driven professional portrait movie highlight showcasing groom wearing cream and gold embroidered Sherwani, edited with film-grain overlay and golden hour cinematic grading.',
-      image: '/src/assets/images/pakistani_groom_wedding_1780141983288.png',
+      image: pakistaniGroomWedding,
       tags: ['Wedding', 'LUTS', 'Color Grading', 'Sherwani']
     },
     {
@@ -49,7 +54,7 @@ export default function Portfolio() {
       duration: 'High Res Still',
       software: 'Adobe Photoshop CC',
       description: 'Dramatically list photo of a young Pakistani male model in elegant modern jacket, retouched with targeted dodge & burn, neon reflection glare, and modern orange & teal highlight styling.',
-      image: '/src/assets/images/pakistani_streets_portrait_1780142028744.png',
+      image: pakistaniStreetsPortrait,
       tags: ['Fashion', 'Portrait', 'Photoshop', 'Studio']
     }
   ];
@@ -75,7 +80,7 @@ export default function Portfolio() {
           {/* Category Tabs */}
           <div className="flex items-center justify-center gap-1.5 pt-6">
             <button
-              id="portfolio-filter-all"
+               id="portfolio-filter-all"
               onClick={() => setActiveCategory('all')}
               className={`px-4 py-2 rounded-full text-xs font-mono font-medium tracking-wide transition-all ${
                 activeCategory === 'all'
@@ -144,8 +149,8 @@ export default function Portfolio() {
             
             <div className="lg:col-span-6">
               <BeforeAfterSlider
-                beforeImage="/src/assets/images/pakistani_streets_portrait_1780142028744.png"
-                afterImage="/src/assets/images/pakistani_streets_portrait_1780142028744.png"
+                beforeImage={pakistaniStreetsPortrait}
+                afterImage={pakistaniStreetsPortrait}
                 title="Cinematic Lighting & Tone Grade"
                 description="Drag slide-ring horizontally to test flat log contrast versus our completed color graded portrait masters."
               />
