@@ -21,6 +21,7 @@ export default function BeforeAfterSlider({
 }: BeforeAfterSliderProps) {
   const [sliderPosition, setSliderPosition] = useState<number>(50);
   const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [containerWidth, setContainerWidth] = useState<number>(500);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleMove = (clientX: number) => {
@@ -50,6 +51,28 @@ export default function BeforeAfterSlider({
     return () => {
       window.removeEventListener('mouseup', handleUp);
       window.removeEventListener('touchend', handleUp);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.getBoundingClientRect().width);
+      }
+    };
+    
+    updateWidth();
+    
+    // Set up a resize observer
+    const observer = new ResizeObserver(() => {
+      updateWidth();
+    });
+    observer.observe(containerRef.current);
+    
+    return () => {
+      observer.disconnect();
     };
   }, []);
 
@@ -91,7 +114,7 @@ export default function BeforeAfterSlider({
             src={beforeImage}
             alt="Original Raw Footage"
             className="absolute inset-0 h-full object-cover pointer-events-none brightness-90 saturate-[0.4] contrast-[0.7] blur-[0.3px]"
-            style={{ width: containerRef.current?.getBoundingClientRect().width || '100vw', maxWidth: 'none' }}
+            style={{ width: containerWidth, maxWidth: 'none' }}
             referrerPolicy="no-referrer"
           />
           <div className="absolute left-4 bottom-4 bg-[#0d0e12]/80 backdrop-blur-md px-2.5 py-1 rounded text-[10px] font-mono tracking-widest uppercase text-zinc-400 border border-zinc-700/20 z-10 whitespace-nowrap">
